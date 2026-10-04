@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: redirect-to-mytinytools
+    runtime: static
+    staticPublishPath: .
+    pullRequestPreviewsEnabled: false
+    routes:
+      # Serve the redirect page for every old path, so deep links
+      # (e.g. /pdf-to-word) still load and get forwarded by the script.
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: no-referrer
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=300
